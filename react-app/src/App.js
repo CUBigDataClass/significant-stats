@@ -27,14 +27,4 @@ function App() {
     );
   }
 
-/*
-function loadMapApi() {
-  var API_key = 'AIzaSyAcJR1spSFgCcXDKofMGAVGd-7xdkvDZlg';
-  var script = document.createElement('script');
-  script.src = 'https://maps.googleapis.com/maps/api/js?key=' + API_key + '&callback=initMap';
-  script.async = true;
-  document.body.appendChild(script);
-}
-*/
-
 export default App;
