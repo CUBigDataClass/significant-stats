@@ -2,15 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 import ComboBox from './components/ComboBox.js';
 import MapChart from './components/MapChart.js';
-import React, { Component } from 'react';
+import React from 'react';
 //import MapChart from './components/MapChart';
 import Map from './components/map/Map.js';
 
-const location = {
-  address: '1600 Amphitheatre Parkway, Mountain View, california.',
-  lat: 37.42216,
-  lng: -122.08427,
-} // our location object from earlier
 /*
 function App() {
   return (
@@ -26,14 +21,10 @@ function App() {
   );
 }
 */
-class App extends Component {
-    render() {
-      return (
-        <div className="App">
-          <Map/>
-        </div>
-      );
-    }
+function App() {
+    return (
+      <Map/>
+    );
   }
 
 /*
