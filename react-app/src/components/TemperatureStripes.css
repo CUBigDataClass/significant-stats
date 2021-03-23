@@ -6,5 +6,10 @@
   width: 600px;
   height: 420px;
   background: none;
-  outline: #4CAF50 solid 3px;
+}
+
+.stripe{
+  position: absolute;
+  top: 0%;
+  height: 100%;
 }
