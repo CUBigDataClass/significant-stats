@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Async from 'react-async';
 import ComboBox from './components/ComboBox.js';
+import CountryBox from './components/CountryBox.js';
+import StatesBox from './components/StatesBox.js';
+import StarYearBox from './components/StartYearBox.js';
+import EndYearBox from './components/EndYearBox.js';
 import MapChart from './components/MapChart.js';
+import Button from '@material-ui/core/Button';
 //import MapChart from './components/MapChart';
 
 // const getData = async() =>
 //   await fetch(`/data/Colorado`)
 //   .then(res => (res.ok ? res : Promise.reject(res)))
 //   .then(res => res.json())
-
 
 function App() {
   const [currentTime, setCurrentTime] = useState(0);
@@ -21,17 +24,42 @@ function App() {
   const [stateTempData, setStateTempData] = useState([]);
   const [countryTempData, setCountryTempData] = useState([]);
   const [errorMessage,setErrorMessage] = useState('');
+  const [showCountryForm, setShowCountryForm] = useState(false);
+  const [showStateForm, setShowStateForm] = useState(false);
  
   const handleSubmitState = (evt) => {
     evt.preventDefault();
-    setCountryTempData([]);
-    fetchDataState();
+    if (stateName === '' || startYear === '' || endYear ===''){
+      alert("Please fill in all of the fields above.");
+    }
+    else if (parseInt(startYear) < 1895 || parseInt(endYear) < 1895){
+      alert("U.S. State Data is only available from 1895 - 2019. Please change your selected starting/ending years.")
+    }
+    else if (parseInt(startYear) > parseInt(endYear)){
+      alert("Your selected year range is invalid. Please try again.")
+    }
+    else{
+      setCountryTempData([]);
+      setErrorMessage('');
+      fetchDataState();
+    }   
+    
   }
 
   const handleSubmitCountry = (evt) => {
     evt.preventDefault();
-    setStateTempData([]);
-    fetchDataCountry();
+    if (country=== '' || startYear === '' || endYear ===''){
+      alert("Please fill in all of the fields above.");
+    }
+    else if (parseInt(startYear) > parseInt(endYear)){
+      alert("Your selected year range is invalid. Please try again.")
+    }
+    else{
+      setStateTempData([]);
+      setErrorMessage('');
+      fetchDataCountry();
+    }
+    
   }
 
   async function fetchDataState(){
@@ -53,6 +81,15 @@ function App() {
   }
 
   async function fetchDataCountry(){
+    const year_url = '/country_start_year/'+country;
+    const year_response = await fetch(year_url);
+    const year_json = await year_response.json();
+    const min_year =year_json.result[0].year;
+    console.log(min_year);
+    if (min_year > parseInt(startYear)){
+      alert("Temperature data on "+country+" from "+startYear+" to "+endYear+" was not available in our database. Please try again with a starting year of at least "+min_year+" and an ending of at most 2013.");
+      return;
+    }
     const url = '/country_temp/'+country+'/'+startYear+'/'+endYear;
     try{
       const response = await fetch(url);
@@ -62,126 +99,77 @@ function App() {
         setErrorMessage(error);
         return Promise.reject(error);
       }
-      setCountryTempData(json.result);
-
+        setCountryTempData(json.result);
+      
     } catch (error){
       setErrorMessage(error.toString());
       console.log(error);
     }
   }
-
-  // useEffect(async () => {
-  //   fetch("/data/"+stateName+'/'+year)
-  //     .then(res => res.json())
-  //     .then(
-  //       (result) => {
-  //         setIsLoaded(true);
-  //         setTempData(result.result);
-  //       },
-  //       // Note: it's important to handle errors here
-  //       // instead of a catch() block so that we don't swallow
-  //       // exceptions from actual bugs in components.
-  //       (error) => {
-  //         setIsLoaded(true);
-  //         setError(error);
-  //       }
-  //     )
-  // }, [])
   
-
   useEffect(() => {
     fetch('/time').then(res => res.json()).then(data => {
       setCurrentTime(data.time);
     });
   }, []);
 
+  function handleCountryChange(newValue) {
+    setCountry(newValue);
+  }
+
+  function handleStateChange(newValue) {
+    setStateName(newValue);
+  }
+
+  function handleStartYearChange(newValue) {
+    setStartYear(newValue);
+  }
+
+  function handleEndYearChange(newValue) {
+    setEndYear(newValue);
+  }
+
+  function changeStateForm(){
+    setShowCountryForm(false);
+    setShowStateForm(true);
+    console.log(showStateForm,showCountryForm);
+  }
+
+  function changeCountryForm(){
+    setShowCountryForm(true);
+    setShowStateForm(false);
+    console.log(showStateForm,showCountryForm);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <ComboBox/>
-        <MapChart/>
-        <p>The current time is {currentTime}.</p>
-        {/* <Async promiseFn={getData}>
-          <Async.Loading>Loading...</Async.Loading>
-          <Async.Fulfilled>
-            {data => {
-              return (
-                <div>
-                  <div>
-                    <h2>React Async</h2>
-                  </div>
-                  {data.result.map(row=> (
-                    <div key={row.state+row.year} className="row">
-                      <div className="col-md-12">
-                        <p>State:{row.state}</p>
-                        <p>Average Temp:{row.average_temp}</p>
-                        <p>Year:{row.year}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )
-            }}
-          </Async.Fulfilled>
-          <Async.Rejected>
-            {error => `Something went wrong: ${error.message}`}
-          </Async.Rejected>
-      </Async> */}
-      <form onSubmit={handleSubmitState}>
-      <label>
-        State:
-        <input
-          type="text"
-          value={stateName}
-          onChange={event => setStateName(event.target.value)}
-        />
-      </label>
-      <label>
-        Start Year:
-        <input
-          type="number"
-          value={startYear}
-          onChange={event => setStartYear(event.target.value)}
-        />
-      </label>
-      <label>
-        End Year:
-        <input
-          type="number"
-          value={endYear}
-          onChange={event => setEndYear(event.target.value)}
-        />
-      </label>
-      <input type="submit" value="Submit" />
-    </form>
-    <form onSubmit={handleSubmitCountry}>
-      <label>
-        Country:
-        <input
-          type="text"
-          value={country}
-          onChange={event => setCountry(event.target.value)}
-        />
-      </label>
-      <label>
-        Start Year:
-        <input
-          type="number"
-          value={startYear}
-          onChange={event => setStartYear(event.target.value)}
-        />
-      </label>
-      <label>
-        End Year:
-        <input
-          type="number"
-          value={endYear}
-          onChange={event => setEndYear(event.target.value)}
-        />
-      </label>
-      <input type="submit" value="Submit" />
-    </form>
+        <div>
+          <Button variant="contained" color="primary" onClick={changeStateForm}>Show State Form</Button>
+        </div>
+        <div>
+          <Button variant="contained" color="primary" onClick={changeCountryForm}>Show Country Form</Button>
+        </div>
+        <br></br>
+        {showStateForm ? <div>
+          <form onSubmit={handleSubmitState}>
+          <StatesBox onChange={handleStateChange}/>
+          <StarYearBox value={startYear} onChange={handleStartYearChange}/>
+          <EndYearBox value={endYear} onChange={handleEndYearChange}/>
+          <Button type="submit" value="Submit" variant="contained" color="primary">Submit</Button>
+          </form>
+        </div>: null}
+        {showCountryForm ? <div>
+           <form onSubmit={handleSubmitCountry}>
+          <CountryBox value={country} onChange={handleCountryChange}/>
+          <StarYearBox value={startYear} onChange={handleStartYearChange}/>
+          <EndYearBox value={endYear} onChange={handleEndYearChange}/>
+          <Button type="submit" value="Submit" variant="contained" color="primary">Submit</Button>
+          </form>
+        </div> :null}
+        
     <ul>
           {stateTempData.map(row => (
             <li>
@@ -195,6 +183,9 @@ function App() {
           ))}
         </ul>
         <p>{errorMessage}</p>
+
+        <MapChart/>
+        <p>The current time is {currentTime}.</p>
       </header>
     </div>
   );
