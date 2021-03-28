@@ -23,6 +23,7 @@ function App() {
   const [endYear, setEndYear] = useState('');
   const [stateTempData, setStateTempData] = useState([]);
   const [countryTempData, setCountryTempData] = useState([]);
+  const [countryYearlyTempData,setCountryYearlyTempData] = useState([]);
   const [errorMessage,setErrorMessage] = useState('');
   const [showCountryForm, setShowCountryForm] = useState(false);
   const [showStateForm, setShowStateForm] = useState(false);
@@ -40,6 +41,7 @@ function App() {
     }
     else{
       setCountryTempData([]);
+      setCountryYearlyTempData([]);
       setErrorMessage('');
       fetchDataState();
     }   
@@ -99,7 +101,9 @@ function App() {
         setErrorMessage(error);
         return Promise.reject(error);
       }
-        setCountryTempData(json.result);
+        var temp = json.result;
+        temp.sort((a,b)=>parseInt(a.year) - parseInt(b.year));
+        setCountryTempData(temp);
       
     } catch (error){
       setErrorMessage(error.toString());
@@ -112,6 +116,43 @@ function App() {
       setCurrentTime(data.time);
     });
   }, []);
+
+  useEffect(() => {
+    var curYear = parseInt(startYear);
+    var curTemp = 0;
+    var yearlyTemps = [];
+    if (countryTempData.length > 0){
+      countryTempData.forEach(function(item){
+        if (item.year===curYear){
+          curTemp+=item.average_temp;
+        }
+        else{
+          var avgTemp = curTemp/12;
+          yearlyTemps.push({
+            'average_temp':avgTemp,
+            'country':item.country,
+            'year':curYear
+          });
+          curTemp = item.average_temp;
+          curYear = item.year;
+        }
+      })
+      var avgTemp = curTemp/12;
+      yearlyTemps.push({
+        'average_temp':avgTemp,
+        'country':country,
+        'year':curYear
+      });
+      console.log(yearlyTemps);
+      updateCountryYearly(yearlyTemps);
+      console.log(countryYearlyTempData);
+    }
+  },[countryTempData]);
+
+  function updateCountryYearly(newData){
+    setCountryYearlyTempData(newData);
+    console.log(countryYearlyTempData);
+  }
 
   function handleCountryChange(newValue) {
     setCountry(newValue);
@@ -178,7 +219,13 @@ function App() {
           ))}
           {countryTempData.map(row => (
             <li>
-              {row.country}, Average Temp: {row.average_temp}, Year: {row.year}
+              {row.country}, Average Temp: {row.average_temp}, Year: {row.year}, Month {row.month}
+            </li>
+          ))}
+          <hr></hr>
+          {countryYearlyTempData.map(row => (
+            <li>
+              {row.country}, Average Yearly Temp: {row.average_temp}, Year: {row.year}
             </li>
           ))}
         </ul>
