@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+
 import ComboBox from './components/ComboBox.js';
 import CountryBox from './components/CountryBox.js';
 import StatesBox from './components/StatesBox.js';
@@ -9,6 +10,8 @@ import EndYearBox from './components/EndYearBox.js';
 import MapChart from './components/MapChart.js';
 import Button from '@material-ui/core/Button';
 //import MapChart from './components/MapChart';
+import CountrySelect from './components/CountrySelect.js';
+import TemperatureStripes from './components/TemperatureStripes.js';
 
 // const getData = async() =>
 //   await fetch(`/data/Colorado`)
@@ -27,6 +30,9 @@ function App() {
   const [errorMessage,setErrorMessage] = useState('');
   const [showCountryForm, setShowCountryForm] = useState(false);
   const [showStateForm, setShowStateForm] = useState(false);
+  const temperature = 30;
+  let hue = 200 + (160 * ( temperature / 100 ));
+  console.log(hue)
  
   const handleSubmitState = (evt) => {
     evt.preventDefault();
@@ -230,12 +236,18 @@ function App() {
           ))}
         </ul>
         <p>{errorMessage}</p>
-
-        <MapChart/>
         <p>The current time is {currentTime}.</p>
       </header>
+      <div style={{
+          position: 'absolute', left: '50%', top: '10%',
+          transform: 'translate(-50%, -50%)'
+        }}>
+          <CountrySelect/>
+        </div>
+        <TemperatureStripes/>
     </div>
   );
 }
+
 
 export default App;
