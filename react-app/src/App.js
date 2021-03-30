@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import ComboBox from './components/ComboBox.js';
+// import ComboBox from './components/ComboBox.js';
 import CountryBox from './components/CountryBox.js';
 import StatesBox from './components/StatesBox.js';
 import StarYearBox from './components/StartYearBox.js';
 import EndYearBox from './components/EndYearBox.js';
-import MapChart from './components/MapChart.js';
+// import MapChart from './components/MapChart.js';
 import Button from '@material-ui/core/Button';
 //import MapChart from './components/MapChart';
 import CountrySelect from './components/CountrySelect.js';
@@ -19,7 +19,6 @@ import TemperatureStripes from './components/TemperatureStripes.js';
 //   .then(res => res.json())
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(0);
   const [stateName, setStateName] = useState('');
   const [country, setCountry] = useState('');
   const [startYear, setStartYear] = useState('');
@@ -116,12 +115,6 @@ function App() {
       console.log(error);
     }
   }
-  
-  useEffect(() => {
-    fetch('/time').then(res => res.json()).then(data => {
-      setCurrentTime(data.time);
-    });
-  }, []);
 
   useEffect(() => {
     var curYear = parseInt(startYear);
@@ -190,10 +183,12 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <ComboBox/>
-        <div>
+      <div style={{
+          position: 'absolute', left: '50%', top: '15%',
+          transform: 'translate(-50%, -50%)'
+        }}>
+          {/* <CountrySelect/> */}
+          <div>
           <Button variant="contained" color="primary" onClick={changeStateForm}>Show State Form</Button>
         </div>
         <div>
@@ -236,13 +231,6 @@ function App() {
           ))}
         </ul>
         <p>{errorMessage}</p>
-        <p>The current time is {currentTime}.</p>
-      </header>
-      <div style={{
-          position: 'absolute', left: '50%', top: '10%',
-          transform: 'translate(-50%, -50%)'
-        }}>
-          <CountrySelect/>
         </div>
         <TemperatureStripes/>
     </div>
