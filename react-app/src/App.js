@@ -196,18 +196,18 @@ function App() {
         </div>
         <br></br>
         {showStateForm ? <div>
-          <form onSubmit={handleSubmitState}>
           <StatesBox onChange={handleStateChange}/>
           <StarYearBox value={startYear} onChange={handleStartYearChange}/>
           <EndYearBox value={endYear} onChange={handleEndYearChange}/>
+          <form onSubmit={handleSubmitState}>
           <Button type="submit" value="Submit" variant="contained" color="primary">Submit</Button>
           </form>
         </div>: null}
         {showCountryForm ? <div>
-           <form onSubmit={handleSubmitCountry}>
           <CountryBox value={country} onChange={handleCountryChange}/>
           <StarYearBox value={startYear} onChange={handleStartYearChange}/>
           <EndYearBox value={endYear} onChange={handleEndYearChange}/>
+           <form onSubmit={handleSubmitCountry}>
           <Button type="submit" value="Submit" variant="contained" color="primary">Submit</Button>
           </form>
         </div> :null}
