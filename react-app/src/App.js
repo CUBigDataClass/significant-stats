@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 //import MapChart from './components/MapChart';
 import CountrySelect from './components/CountrySelect.js';
 import TemperatureStripes from './components/TemperatureStripes.js';
+import OutlinedCard from './components/OutlinedCard';
 
 // const getData = async() =>
 //   await fetch(`/data/Colorado`)
@@ -191,6 +192,7 @@ function App() {
           <div>
           <Button variant="contained" color="primary" onClick={changeStateForm}>Show State Form</Button>
         </div>
+        <br/>
         <div>
           <Button variant="contained" color="primary" onClick={changeCountryForm}>Show Country Form</Button>
         </div>
@@ -233,7 +235,12 @@ function App() {
         <p>{errorMessage}</p>
         </div>
         <TemperatureStripes/>
+        <div style={{ position: 'absolute', left: '15%', top: '48%', transform: 'translate(-50%, -50%)'}}>
+          <OutlinedCard/>
+        </div>
+        
     </div>
+    
   );
 }
 
