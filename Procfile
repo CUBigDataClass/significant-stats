@@ -1,1 +1,1 @@
-web: gunicorn react-app/flask-api/app:app
+web: gunicorn app:app
