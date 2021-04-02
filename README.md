@@ -1,5 +1,8 @@
 # significant-stats
 
+# Heroku Link
+[https://significant-stats.herokuapp.com/](https://significant-stats.herokuapp.com/)
+
 # Python Virtual Environment Set Up
 - Go into the "react-app/flask-api" directory
 - Type in "python -m venv venv" to make a virtual environment directory called "venv"
