@@ -13,7 +13,7 @@ api = Api(app)
 
 @app.route("/", defaults={'path':''})
 def serve(path):
-    return send_from_directory(app.static_folder,'../frontend/src/index.js')
+    return send_from_directory(app.static_folder,'../frontend/build/index.html')
 
 api.add_resource(HelloApiHandler, '/flask/hello')
 
