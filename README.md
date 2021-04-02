@@ -23,6 +23,6 @@
 - Type in "flask run"
 
 # Running frontend
-- Go into the "react-app" directory
+- Go into the "react-app/frontend" directory
 - Type in "npm install" if you need to get the correct Javascript dependencies
 - Type in "npm start"
