@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn --chdir react-app/flask-api app:app
