@@ -8,12 +8,12 @@ from cassandra.cluster import Cluster
 cluster = Cluster(['34.71.38.163','34.69.92.195','35.225.100.34'])
 session = cluster.connect('firstkeyspace')
 
-app = Flask(__name__, static_url_path='', static_folder='frontend/build')
+app = Flask(__name__, static_url_path='', static_folder='../frontend/build')
 api = Api(app)
 
 @app.route("/", defaults={'path':''})
 def serve(path):
-    return send_from_directory(app.static_folder,'../frontend/build/index.html')
+    return send_from_directory(app.static_folder,'index.html')
 
 api.add_resource(HelloApiHandler, '/flask/hello')
 
