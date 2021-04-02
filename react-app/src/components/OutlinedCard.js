@@ -34,9 +34,10 @@ export default function OutlinedCard() {
             Country Name
         </Typography>
         <br/>
-        {/* <CustomizedSlider/> */}
+        <CustomizedSlider/>
+        <br/>
         <Typography className={classes.title} variant="body2" component="p">
-          Average Temperature
+          Average Temperature 
         </Typography>
         <br/>
         <Typography className={classes.title} variant="body2" component="p">

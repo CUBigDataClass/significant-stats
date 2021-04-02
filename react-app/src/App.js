@@ -235,7 +235,7 @@ function App() {
         <p>{errorMessage}</p>
         </div>
         <TemperatureStripes/>
-        <div style={{ position: 'absolute', left: '15%', top: '48%', transform: 'translate(-50%, -50%)'}}>
+        <div style={{ position: 'absolute', left: '80%', top: '48%', transform: 'translate(-50%, -50%)'}}>
           <OutlinedCard/>
         </div>
         
