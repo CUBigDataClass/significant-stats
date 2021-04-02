@@ -21,16 +21,6 @@ import OutlinedCard from './components/OutlinedCard';
 //   .then(res => res.json())
 
 function App() {
-  const [getMessage, setGetMessage] = useState({})
-
-  useEffect(()=>{
-    axios.get('https://significant-stats.herokuapp.com/flask/hello').then(response => {
-      console.log("SUCCESS", response)
-      setGetMessage(response)
-    }).catch(error => {
-      console.log(error)
-    })
-  }, [])
   const [stateName, setStateName] = useState('');
   const [country, setCountry] = useState('');
   const [startYear, setStartYear] = useState('');
