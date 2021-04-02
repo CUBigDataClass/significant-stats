@@ -217,7 +217,9 @@ function App() {
         </div>: null}
         {showCountryForm ? <div>
           <CountryBox value={country} onChange={handleCountryChange}/>
-          <StarYearBox value={startYear} onChange={handleStartYearChange}/>
+          <div style={{ padding: '10px'}}>
+            <StarYearBox value={startYear} onChange={handleStartYearChange}/>
+          </div>
           <EndYearBox value={endYear} onChange={handleEndYearChange}/>
            <form onSubmit={handleSubmitCountry}>
           <Button type="submit" value="Submit" variant="contained" color="primary">Submit</Button>
