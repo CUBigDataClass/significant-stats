@@ -13,8 +13,8 @@
 
 # Python dependencies
 - Flask
-- flask-cqlalchemy (Maybe not)
 - cassandra-driver
+- Flask-RESTful
 
 # Running backend
 - Make sure port 5000 is clear
