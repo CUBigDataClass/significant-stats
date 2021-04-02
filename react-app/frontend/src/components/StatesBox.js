@@ -17,7 +17,7 @@ function boxSubmitHandler(event){
     <Autocomplete
       id="state-box"
       options={states}
-      style={{ width: 300 }}
+      style={{ position:'relative', top:'10%', left: '40%', width: 300 }}
       renderInput={(params) => <TextField {...params} label="Select State" variant="outlined" />}
       onChange={handleStateChange}
       onSubmit={boxSubmitHandler}

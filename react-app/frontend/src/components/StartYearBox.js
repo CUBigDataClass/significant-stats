@@ -17,7 +17,7 @@ function boxSubmitHandler(event){
     <Autocomplete
       id="start-year-box"
       options={years}
-      style={{ width: 300 }}
+      style={{ position:'relative', top:'10%', left: '40%', width: 300 }}
       renderInput={(params) => <TextField {...params} label="Select Starting Year" variant="outlined" />}
       onChange={handleStartYearChange}
       onSubmit={boxSubmitHandler}

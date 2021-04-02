@@ -11,7 +11,7 @@ function getStripe(temp, numOfEntries) {
      var widthPercent = stripeWidth + '%';
      console.log(widthPercent)
      console.log(stripeCounter)
-     var moveLeft = stripeCounter * stripeWidth - 100;
+     var moveLeft = (stripeCounter * stripeWidth - 100) % 100;
      console.log(moveLeft)
      var leftPercent = moveLeft + '%';
 

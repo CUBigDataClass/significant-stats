@@ -17,7 +17,7 @@ export default function CountryBox(props) {
     <Autocomplete
       id="country-box"
       options={countries}
-      style={{ width: 300 }}
+      style={{ position:'relative', top:'10%', left: '40%', width: 300 }}
       renderInput={(params) => <TextField {...params} label="Select Country" variant="outlined" />}
       onChange={handleCountryChange}
       onSubmit={boxSubmitHandler}

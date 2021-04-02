@@ -17,7 +17,7 @@ export default function EndYearBox(props) {
     <Autocomplete
       id="end-year-box"
       options={years}
-      style={{ width: 300 }}
+      style={{position:'relative', top:'10%', left: '40%', width: 300 }}
       renderInput={(params) => <TextField {...params} label="Select Ending Year" variant="outlined" />}
       onChange={handleEndYearChange}
       onSubmit={boxSubmitHandler}

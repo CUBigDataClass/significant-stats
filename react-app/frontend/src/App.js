@@ -196,8 +196,7 @@ function App() {
   return (
     <div className="App">
       <div style={{
-          position: 'absolute', left: '50%', top: '15%',
-          transform: 'translate(-50%, -50%)'
+          left: '50%', display: 'block'
         }}>
           {/* <CountrySelect/> */}
           <div>
