@@ -31,6 +31,8 @@ export default function OutlinedCard(props) {
   const [errorMessage,setErrorMessage] = useState('');
   const [countryTempData, setCountryTempData] = useState([]);
   const [countryYearlyTempData,setCountryYearlyTempData] = useState([]);
+  const [overallAvgTemp, setOverallAvgTemp]=useState('');
+  const [showOverallAvg, setShowOverallAvg] = useState(false);
   const [startYear, setStartYear] = useState('');
   const [endYear, setEndYear] = useState('');
 
@@ -142,6 +144,24 @@ export default function OutlinedCard(props) {
     }
   },[props,startYear,endYear]);
 
+  useEffect(()=>{
+    if (countryYearlyTempData.length > 0){
+      var overallTemp = countryYearlyTempData.reduce(function(prev,cur){
+        return prev + cur.average_temp;
+      },0)/countryYearlyTempData.length;
+      setOverallAvgTemp(overallTemp);
+      setShowOverallAvg(true);
+    }
+    else if (stateTempData.length > 0){
+      var overallTemp = stateTempData.reduce(function(prev,cur){
+        return prev + cur.average_temp;
+      },0)/stateTempData.length;
+      setOverallAvgTemp(overallTemp);
+      setShowOverallAvg(true);
+    }
+  },[countryYearlyTempData,stateTempData])
+
+
   function updateCountryYearly(newData){
     setCountryYearlyTempData(newData);
     console.log(countryYearlyTempData);
@@ -170,6 +190,7 @@ export default function OutlinedCard(props) {
                Year: {row.year}, Average Yearly Temp: {row.average_temp}°C
             </li>
           ))}
+          {showOverallAvg ? <div><hr></hr>Overall Average Temp: {overallAvgTemp}°C</div>: null}
         <br/>
         <Typography className={classes.title} variant="body2" component="p">
           Carbon Emissions
