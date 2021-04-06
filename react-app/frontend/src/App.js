@@ -16,9 +16,7 @@ function App(props) {
   const [stateName, setStateName] = useState('');
   const [country, setCountry] = useState('');
   const [tempData, setTempData] = useState({});
-  const temperature = 30;
-  let hue = 200 + (160 * ( temperature / 100 ));
-  console.log(hue);
+
 
   function handleLocationChange(newValue) {
     if (newValue != null){
@@ -67,11 +65,11 @@ function App(props) {
           <LocationBox onChange={handleLocationChange}/>
           <br></br>
         </div>
-        <TemperatureStripes/>
-        <div style={{ position: 'absolute', left: '80%', top: '48%', transform: 'translate(-50%, -50%)'}}>
+        <div style={{ position: 'relative'}}>
           <OutlinedCard country={country} stateName={stateName} onDataChange={handleDataChange} />
         </div>
-
+        <TemperatureStripes tempData={tempData}/>
+        <h3> Average temperature over the years </h3>
     </div>
 
   );
