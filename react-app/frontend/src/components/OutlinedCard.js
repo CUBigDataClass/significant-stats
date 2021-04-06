@@ -36,6 +36,8 @@ export default function OutlinedCard(props) {
   const [startYear, setStartYear] = useState('');
   const [endYear, setEndYear] = useState('');
 
+  props.onAvgTempChange(overallAvgTemp);
+
   function handleYearChange(value){
     setStartYear(value[0]);
     setEndYear(value[1]);
