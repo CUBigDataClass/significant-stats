@@ -33,10 +33,8 @@ export default function OutlinedCard(props) {
   const [countryYearlyTempData,setCountryYearlyTempData] = useState([]);
   const [overallAvgTemp, setOverallAvgTemp]=useState('');
   const [showOverallAvg, setShowOverallAvg] = useState(false);
-  const [startYear, setStartYear] = useState('');
-  const [endYear, setEndYear] = useState('');
-
-  props.onAvgTempChange(overallAvgTemp);
+  const [startYear, setStartYear] = useState(1990);
+  const [endYear, setEndYear] = useState(2000);
 
   function handleYearChange(value){
     setStartYear(value[0]);
@@ -128,14 +126,11 @@ export default function OutlinedCard(props) {
         'country':props.country,
         'year':curYear
       });
-      console.log(yearlyTemps);
       updateCountryYearly(yearlyTemps);
-      console.log(countryYearlyTempData);
     }
   },[countryTempData]);
 
   useEffect(() => {
-    console.log(props);
     if (startYear !== '' && endYear !== ''){
       if (props.stateName === ""){
         fetchDataCountry();
@@ -144,7 +139,7 @@ export default function OutlinedCard(props) {
         fetchDataState();
       }
     }
-  },[props,startYear,endYear]);
+  },[props.stateName,props.country,startYear,endYear]);
 
   useEffect(()=>{
     if (countryYearlyTempData.length > 0){
@@ -163,10 +158,17 @@ export default function OutlinedCard(props) {
     }
   },[countryYearlyTempData,stateTempData])
 
+  useEffect(()=>{
+    props.onDataChange({
+      'stateData':stateTempData,
+      'countryMonthlyData':countryTempData,
+      'countryYearlyData':countryYearlyTempData,
+      'overallAvgTemp':overallAvgTemp});
+  },[overallAvgTemp])
+
 
   function updateCountryYearly(newData){
     setCountryYearlyTempData(newData);
-    console.log(countryYearlyTempData);
   }
 
 

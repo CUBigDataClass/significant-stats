@@ -15,7 +15,7 @@ function App(props) {
 
   const [stateName, setStateName] = useState('');
   const [country, setCountry] = useState('');
-  const [overallAvgTemp, setOverallAvgTemp]= useState('');
+  const [tempData, setTempData] = useState({});
   const temperature = 30;
   let hue = 200 + (160 * ( temperature / 100 ));
   console.log(hue);
@@ -35,13 +35,29 @@ function App(props) {
     }
   }
 
-  function handleChange(value){
-    setOverallAvgTemp(value);
+  function handleDataChange(value){
+    setTempData(value);
   }
 
+
   useEffect(()=>{
-    console.log(overallAvgTemp);
-  },[overallAvgTemp])
+    console.log(tempData);
+    /*All temp data is stored in tempData.
+    TempData has 4 attributes: stateData, countryMonthlyData, countryYearlyData, overallAvgTemp
+    Check the length of stateData and countryMonthly/YearlyData to know which one to use*/
+    if (Object.keys(tempData).length !== 0){
+      console.log("We got data!");
+      if (tempData.stateData.length > 0){
+        //use state data
+        console.log("We got s!");
+      }
+      else if (tempData.countryMonthlyData.length > 0){
+        //use country data
+        console.log("We got c!");
+      }
+    }
+    
+  },[tempData])
 
   return (
     <div className="App">
@@ -53,7 +69,7 @@ function App(props) {
         </div>
         <TemperatureStripes/>
         <div style={{ position: 'absolute', left: '80%', top: '48%', transform: 'translate(-50%, -50%)'}}>
-          <OutlinedCard country={country} stateName={stateName} onAvgTempChange={handleChange}/>
+          <OutlinedCard country={country} stateName={stateName} onDataChange={handleDataChange} />
         </div>
 
     </div>
