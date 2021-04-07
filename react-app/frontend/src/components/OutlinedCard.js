@@ -33,6 +33,7 @@ export default function OutlinedCard(props) {
   const [countryYearlyTempData,setCountryYearlyTempData] = useState([]);
   const [overallAvgTemp, setOverallAvgTemp]=useState('');
   const [showOverallAvg, setShowOverallAvg] = useState(false);
+  const [std,setStd]=useState('');
   const [startYear, setStartYear] = useState(1990);
   const [endYear, setEndYear] = useState(2000);
 
@@ -146,6 +147,13 @@ export default function OutlinedCard(props) {
       var overallTemp = countryYearlyTempData.reduce(function(prev,cur){
         return prev + cur.average_temp;
       },0)/countryYearlyTempData.length;
+      var curStd = countryYearlyTempData.reduce(function(total,cur){
+        var dev = cur.average_temp - overallTemp;
+        var devSqrd = dev*dev;
+        return total+devSqrd;
+      },0)/countryYearlyTempData.length;
+      curStd = Math.sqrt(curStd);
+      setStd(curStd);
       setOverallAvgTemp(overallTemp);
       setShowOverallAvg(true);
     }
@@ -153,6 +161,13 @@ export default function OutlinedCard(props) {
       var overallTemp = stateTempData.reduce(function(prev,cur){
         return prev + cur.average_temp;
       },0)/stateTempData.length;
+      var curStd = stateTempData.reduce(function(total,cur){
+        var dev = cur.average_temp - overallTemp;
+        var devSqrd = dev*dev;
+        return total+devSqrd;
+      },0)/stateTempData.length;
+      curStd = Math.sqrt(curStd);
+      setStd(curStd);
       setOverallAvgTemp(overallTemp);
       setShowOverallAvg(true);
     }
@@ -163,7 +178,8 @@ export default function OutlinedCard(props) {
       'stateData':stateTempData,
       'countryMonthlyData':countryTempData,
       'countryYearlyData':countryYearlyTempData,
-      'overallAvgTemp':overallAvgTemp});
+      'overallAvgTemp':overallAvgTemp,
+      'std':std});
   },[overallAvgTemp])
 
 
