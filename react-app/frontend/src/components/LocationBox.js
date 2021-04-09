@@ -15,7 +15,7 @@ export default function LocationBox(props) {
       options={locations}
       getOptionLabel={(option) => option.location}
       groupBy={(option=>option.type)}
-      style={{ position:'relative', top:'10%', left: '40%', width: 300 }}
+      style={{ position:'sticky', top:'10%', left: '40%', width: 300 }}
       renderInput={(params) => <TextField {...params} label="Select Country/State" variant="outlined" />}
       onChange={handleLocationChange}
     />
