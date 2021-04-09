@@ -35,7 +35,7 @@ export default function CustomSlider(props) {
       <Typography id="range-slider" gutterBottom>
       </Typography>
       <Slider
-        defaultValue={[1900,2000]}
+        defaultValue={[1990,2000]}
         min={1796}
         max={2019}
         onChangeCommitted={handleYearChange}

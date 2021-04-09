@@ -2,7 +2,7 @@
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  width: 600px;
+  width: 800px;
   height: 420px;
   background: none;
 }
@@ -11,4 +11,6 @@
   position: absolute;
   top: 0%;
   height: 100%;
-}
+  margin: none;
+  padding: none;
+ }

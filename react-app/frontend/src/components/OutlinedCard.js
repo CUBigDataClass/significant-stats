@@ -31,8 +31,11 @@ export default function OutlinedCard(props) {
   const [errorMessage,setErrorMessage] = useState('');
   const [countryTempData, setCountryTempData] = useState([]);
   const [countryYearlyTempData,setCountryYearlyTempData] = useState([]);
-  const [startYear, setStartYear] = useState('');
-  const [endYear, setEndYear] = useState('');
+  const [overallAvgTemp, setOverallAvgTemp]=useState('');
+  const [showOverallAvg, setShowOverallAvg] = useState(false);
+  const [std,setStd]=useState('');
+  const [startYear, setStartYear] = useState(1990);
+  const [endYear, setEndYear] = useState(2000);
 
   function handleYearChange(value){
     setStartYear(value[0]);
@@ -124,14 +127,11 @@ export default function OutlinedCard(props) {
         'country':props.country,
         'year':curYear
       });
-      console.log(yearlyTemps);
       updateCountryYearly(yearlyTemps);
-      console.log(countryYearlyTempData);
     }
   },[countryTempData]);
 
   useEffect(() => {
-    console.log(props);
     if (startYear !== '' && endYear !== ''){
       if (props.stateName === ""){
         fetchDataCountry();
@@ -140,11 +140,51 @@ export default function OutlinedCard(props) {
         fetchDataState();
       }
     }
-  },[props,startYear,endYear]);
+  },[props.stateName,props.country,startYear,endYear]);
+
+  useEffect(()=>{
+    if (countryYearlyTempData.length > 0){
+      var overallTemp = countryYearlyTempData.reduce(function(prev,cur){
+        return prev + cur.average_temp;
+      },0)/countryYearlyTempData.length;
+      var curStd = countryYearlyTempData.reduce(function(total,cur){
+        var dev = cur.average_temp - overallTemp;
+        var devSqrd = dev*dev;
+        return total+devSqrd;
+      },0)/countryYearlyTempData.length;
+      curStd = Math.sqrt(curStd);
+      setStd(curStd);
+      setOverallAvgTemp(overallTemp);
+      setShowOverallAvg(true);
+    }
+    else if (stateTempData.length > 0){
+      var overallTemp = stateTempData.reduce(function(prev,cur){
+        return prev + cur.average_temp;
+      },0)/stateTempData.length;
+      var curStd = stateTempData.reduce(function(total,cur){
+        var dev = cur.average_temp - overallTemp;
+        var devSqrd = dev*dev;
+        return total+devSqrd;
+      },0)/stateTempData.length;
+      curStd = Math.sqrt(curStd);
+      setStd(curStd);
+      setOverallAvgTemp(overallTemp);
+      setShowOverallAvg(true);
+    }
+  },[countryYearlyTempData,stateTempData])
+
+  useEffect(()=>{
+    props.onDataChange({
+      'stateData':stateTempData,
+      'countryMonthlyData':countryTempData,
+      'countryYearlyData':countryYearlyTempData,
+      'overallAvgTemp':overallAvgTemp,
+      'std':std});
+  },[overallAvgTemp])
+
 
   function updateCountryYearly(newData){
     setCountryYearlyTempData(newData);
-    console.log(countryYearlyTempData);
   }
 
 
@@ -170,6 +210,7 @@ export default function OutlinedCard(props) {
                Year: {row.year}, Average Yearly Temp: {row.average_temp}°C
             </li>
           ))}
+          {showOverallAvg ? <div><hr></hr>Overall Average Temp: {overallAvgTemp}°C</div>: null}
         <br/>
         <Typography className={classes.title} variant="body2" component="p">
           Carbon Emissions
