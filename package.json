@@ -1,0 +1,8 @@
+{
+  "cacheDirectories": [
+    "react-app/frontend/node_modules"
+  ],
+  "scripts": {
+    "heroku-postbuild": "cd react-app/frontend && npm install && npm run build"
+  }
+}
