@@ -12,11 +12,11 @@ export default function LocationBox(props) {
   return (
     <Autocomplete
       id="location-box"
-      options={locations}
+      options={locations.sort((a,b) => (a.type> b.type) ? 1 : ((b.type> a.type) ? -1 : 0) || a.location.localeCompare(b.location) )}
       getOptionLabel={(option) => option.location}
       groupBy={(option=>option.type)}
       style={{ position:'sticky', top:'10%', left: '40%', width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Select Country/State" variant="outlined" />}
+      renderInput={(params) => <TextField {...params} label="Select Continent/Country/State" variant="outlined" />}
       onChange={handleLocationChange}
     />
   );
@@ -31,7 +31,7 @@ const locations = [
     {location:'Ecuador', type:'Country'},
     {location:'Mauritius', type:'Country'},
     {location:'Peru', type:'Country'},
-    {location:'South America', type:'Country'},
+    {location:'South America', type:'Continent'},
     {location:"Côte D'Ivoire", type:'Country'},
     {location:"Tunisia", type:'Country'},
     {location:"Anguilla", type:'Country'},
@@ -49,7 +49,7 @@ const locations = [
     {location:'Seychelles',type:'Country'},
     {location:'Libya',type:'Country'},
     {location:'Israel',type:'Country'},
-    {location:'Europe',type:'Country'},
+    {location:'Europe',type:'Continent'},
     {location:'Andorra',type:'Country'},
     {location:'Jordan',type:'Country'},
     {location:'Sint Maarten',type:'Country'},
@@ -111,7 +111,7 @@ const locations = [
     {location:'Oceania',type:'Country'},
     {location:'Croatia',type:'Country'},
     {location:'Liechtenstein',type:'Country'},
-    {location:'Africa',type:'Country'},
+    {location:'Africa',type:'Continent'},
     {location:'Moldova',type:'Country'},
     {location:'Equatorial Guinea',type:'Country'},
     {location:'Brazil',type:'Country'},
@@ -126,7 +126,7 @@ const locations = [
     {location:'Colombia',type:'Country'},
     {location:'Turkmenistan',type:'Country'},
     {location:'Ireland',type:'Country'},
-    {location:'Asia',type:'Country'},
+    {location:'Asia',type:'Continent'},
     {location:'Belgium',type:'Country'},
     {location:'Samoa',type:'Country'},
     {location:'Iceland',type:'Country'},
@@ -247,7 +247,7 @@ const locations = [
     {location:'Slovakia',type:'Country'},
     {location:'Mozambique',type:'Country'},
     {location:'Albania',type:'Country'},
-    {location:'North America',type:'Country'},
+    {location:'North America',type:'Continent'},
     {location:'Afghanistan',type:'Country'},
     {location:'Zimbabwe',type:'Country'},
     {location:'Belarus',type:'Country'},
@@ -257,7 +257,7 @@ const locations = [
     {location:'Nigeria',type:'Country'},
     {location:'Ethiopia',type:'Country'},
     {location:'Gabon',type:'Country'},
-    {location:'Australia',type:'Country'},
+    {location:'Australia',type:'Continent'},
     {location:'Malawi',type:'Country'},
     {location:'Panama',type:'Country'},
     {location:'Italy',type:'Country'},

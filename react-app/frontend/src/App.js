@@ -20,7 +20,7 @@ function App(props) {
 
   function handleLocationChange(newValue) {
     if (newValue != null){
-      if (newValue.type=="Country"){
+      if (newValue.type=="Country"  || newValue.type=="Continent"){
             setCountry(newValue.location);
             setStateName('');
             console.log(country);
@@ -59,9 +59,7 @@ function App(props) {
 
   return (
     <div className="App">
-      <div style={{
-          left: '50%', display: 'block'
-        }}>
+      <div>
           <LocationBox onChange={handleLocationChange}/>
           <br></br>
         </div>

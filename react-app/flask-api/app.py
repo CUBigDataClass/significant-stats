@@ -49,3 +49,17 @@ def get_country_start_year(country):
              for row in data]
 
      return {'result':res}
+ 
+
+@app.route('/country_emission/<country>/<startYear>/<endYear>')
+def get_country_emission(country,startYear,endYear):
+     quer = "SELECT * FROM global_emission WHERE country='"+country+"' AND year>="+startYear+" AND year<="+endYear+" AND emission>0 ALLOW FILTERING;"
+     data = session.execute(quer)
+
+     desc = data.column_names
+     column_names = [col for col in desc]
+
+     res= [dict(zip(column_names, row))
+             for row in data]
+
+     return {'result':res}

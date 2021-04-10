@@ -5,7 +5,16 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import CustomizedSlider from './CustomizedSlider'
+import CustomizedSlider from './CustomizedSlider';
+import Paper from '@material-ui/core/Paper';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
 
 const useStyles = makeStyles({
   root: {
@@ -34,6 +43,7 @@ export default function OutlinedCard(props) {
   const [overallAvgTemp, setOverallAvgTemp]=useState('');
   const [showOverallAvg, setShowOverallAvg] = useState(false);
   const [std,setStd]=useState('');
+  const [countryEmission, setCountryEmission] = useState([]);
   const [startYear, setStartYear] = useState(1990);
   const [endYear, setEndYear] = useState(2000);
 
@@ -43,14 +53,18 @@ export default function OutlinedCard(props) {
   }
 
   async function fetchDataState(){
+    setStateTempData([]);
+    setCountryTempData([]);
+    setCountryYearlyTempData([]);
+    setCountryEmission([]);
+    setOverallAvgTemp('');
+    setStd('')
+    setErrorMessage('');
+    setShowOverallAvg(false);
     if (startYear < 1895 || endYear < 1895){
       alert("U.S. State Data is only available from 1895 - 2019. Please change your selected starting/ending years.");
       return;
     }
-    setStateTempData([]);
-    setCountryTempData([]);
-    setCountryYearlyTempData([]);
-    setErrorMessage('');
     const url = '/state_temp/'+props.stateName+'/'+startYear+'/'+endYear;
     try{
       const response = await fetch(url);
@@ -69,10 +83,14 @@ export default function OutlinedCard(props) {
   }
 
   async function fetchDataCountry(){
+    setStateTempData([]);
     setCountryTempData([]);
     setCountryYearlyTempData([]);
-    setStateTempData([]);
+    setCountryEmission([]);
+    setOverallAvgTemp('');
+    setStd('')
     setErrorMessage('');
+    setShowOverallAvg(false);
     const year_url = '/country_start_year/'+props.country;
     const year_response = await fetch(year_url);
     const year_json = await year_response.json();
@@ -82,18 +100,35 @@ export default function OutlinedCard(props) {
       alert("Temperature data on "+props.country+" from "+startYear+" to "+endYear+" was not available in our database. Please try again with a starting year of at least "+min_year+" and an ending of at most 2013.");
       return;
     }
-    const url = '/country_temp/'+props.country+'/'+startYear+'/'+endYear;
+    const urlTemp = '/country_temp/'+props.country+'/'+startYear+'/'+endYear;
+    const urlEm = '/country_emission/'+props.country+'/'+startYear+'/'+endYear;
     try{
-      const response = await fetch(url);
-      const json = await response.json();
-      if (!response.ok){
-        const error = (json && json.message) || response.statusText;
+      const responseTemp = await fetch(urlTemp);
+      const jsonTemp = await responseTemp.json();
+      if (!responseTemp.ok){
+        const error = (jsonTemp && jsonTemp.message) || responseTemp.statusText;
         setErrorMessage(error);
         return Promise.reject(error);
       }
-        var temp = json.result;
+        var temp = jsonTemp.result;
         temp.sort((a,b)=>parseInt(a.year) - parseInt(b.year));
         setCountryTempData(temp);
+
+    } catch (error){
+      setErrorMessage(error.toString());
+      console.log(error);
+    }
+    try{
+      const responseEm = await fetch(urlEm);
+      const jsonEm= await responseEm.json();
+      if (!responseEm.ok){
+        const error = (jsonEm && jsonEm.message) || responseEm.statusText;
+        setErrorMessage(error);
+        return Promise.reject(error);
+      }
+        var emission = jsonEm.result;
+        console.log(emission);
+        setCountryEmission(emission);
 
     } catch (error){
       setErrorMessage(error.toString());
@@ -133,10 +168,10 @@ export default function OutlinedCard(props) {
 
   useEffect(() => {
     if (startYear !== '' && endYear !== ''){
-      if (props.stateName === ""){
+      if (props.stateName === "" && props.country !== ""){
         fetchDataCountry();
       }
-      else if (props.country === ""){
+      else if (props.country === "" && props.stateName!== ""){
         fetchDataState();
       }
     }
@@ -179,8 +214,9 @@ export default function OutlinedCard(props) {
       'countryMonthlyData':countryTempData,
       'countryYearlyData':countryYearlyTempData,
       'overallAvgTemp':overallAvgTemp,
-      'std':std});
-  },[overallAvgTemp])
+      'std':std,
+      'emission':countryEmission});
+  },[countryEmission, overallAvgTemp])
 
 
   function updateCountryYearly(newData){
@@ -200,21 +236,57 @@ export default function OutlinedCard(props) {
         <Typography className={classes.title} variant="body2" component="p">
           Average Temperature 
         </Typography>
-        {stateTempData.map(row => (
-            <li>
-              Year: {row.year}, Average Temp: {row.average_temp}°C
-            </li>
-          ))}
-        {countryYearlyTempData.map(row => (
-            <li>
-               Year: {row.year}, Average Yearly Temp: {row.average_temp}°C
-            </li>
-          ))}
+        <Paper style={{maxWidth:'50%'}}>
+          <TableContainer style={{maxHeight: 400}}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Year</TableCell>
+                  <TableCell>Average Temperature (°C)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {stateTempData.map(row => (
+                <TableRow key={row.year}>
+                  <TableCell>{row.year}</TableCell>
+                  <TableCell>{row.average_temp.toFixed(2)}</TableCell>
+                </TableRow>
+              ))}
+              {countryYearlyTempData.map(row => (
+                <TableRow key={row.year}>
+                  <TableCell>{row.year}</TableCell>
+                  <TableCell>{row.average_temp.toFixed(2)}</TableCell>
+                </TableRow>
+              ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
           {showOverallAvg ? <div><hr></hr>Overall Average Temp: {overallAvgTemp}°C</div>: null}
         <br/>
         <Typography className={classes.title} variant="body2" component="p">
           Carbon Emissions
         </Typography>
+        <Paper style={{maxWidth:'50%'}}>
+          <TableContainer style={{maxHeight: 400}}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Year</TableCell>
+                  <TableCell>CO<sub>2</sub> and Greenhouse Gas Emission (t)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {countryEmission.map(row => (
+                <TableRow key={row.year}>
+                  <TableCell>{row.year}</TableCell>
+                  <TableCell>{row.emission}</TableCell>
+                </TableRow>
+              ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       </CardContent>
     </Card>
   );
