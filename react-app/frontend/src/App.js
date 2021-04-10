@@ -10,6 +10,8 @@ import TemperatureStripes from './components/TemperatureStripes.js';
 import OutlinedCard from './components/OutlinedCard';
 import { colors } from '@material-ui/core';
 
+import backgroundVideo from './components/bgVid.mp4'
+
 
 function App(props) {
 
@@ -59,15 +61,32 @@ function App(props) {
 
   return (
     <div className="App">
-      <div>
-          <LocationBox onChange={handleLocationChange}/>
-          <br></br>
+      {/* Maybe implement video background of Earth if I can figure out style problems */}
+      {/* <video autoPlay loop muted id='video' style={{
+        position:'absolute',
+        zIndex:-1,
+        width:'100%',
+        left: '50%',
+        top: '50%',
+        height:'auto',
+        objectFit:'cover',
+        transform: 'translate(-50%,-50%)',
+        color: 'rgba(255,255,255,0.5)'
+      }}>
+        <source src={backgroundVideo} type='video/mp4'/>
+      </video> */}
+      <div style={{
+          backgroundColor: 'rgba(255,255,255,0.5)'
+        }}>
+          <div>
+            <LocationBox onChange={handleLocationChange}/>
+            <br></br>
+          </div>
+          <div style={{ position: 'relative'}}>
+            <OutlinedCard country={country} stateName={stateName} onDataChange={handleDataChange} />
+          </div>
         </div>
-        <div style={{ position: 'relative'}}>
-          <OutlinedCard country={country} stateName={stateName} onDataChange={handleDataChange} />
-        </div>
-        <TemperatureStripes tempData={tempData}/>
-        <h3> Average temperature over the years </h3>
+      
     </div>
 
   );

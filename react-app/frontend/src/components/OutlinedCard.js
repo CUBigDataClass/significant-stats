@@ -15,10 +15,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import TemperatureStripes from './TemperatureStripes.js';
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
+    minWidth: 275
   },
   bullet: {
     display: 'inline-block',
@@ -26,8 +27,8 @@ const useStyles = makeStyles({
     transform: 'scale(0.8)',
   },
   title: {
-    fontSize: 14,
-    textAlign: 'left'
+    fontSize: 20,
+    textAlign: 'center'
   },
   pos: {
     marginBottom: 12,
@@ -44,8 +45,11 @@ export default function OutlinedCard(props) {
   const [showOverallAvg, setShowOverallAvg] = useState(false);
   const [std,setStd]=useState('');
   const [countryEmission, setCountryEmission] = useState([]);
+  const [showEmission, setShowEmission] = useState(false);
   const [startYear, setStartYear] = useState(1990);
   const [endYear, setEndYear] = useState(2000);
+  const [tempData, setTempData]= useState({});
+
 
   function handleYearChange(value){
     setStartYear(value[0]);
@@ -209,13 +213,20 @@ export default function OutlinedCard(props) {
   },[countryYearlyTempData,stateTempData])
 
   useEffect(()=>{
-    props.onDataChange({
+    setTempData({
       'stateData':stateTempData,
       'countryMonthlyData':countryTempData,
       'countryYearlyData':countryYearlyTempData,
       'overallAvgTemp':overallAvgTemp,
       'std':std,
-      'emission':countryEmission});
+      'emission':countryEmission
+    });
+    if (countryEmission.length>0){
+      setShowEmission(true);
+    }
+    else{
+      setShowEmission(false);
+    }
   },[countryEmission, overallAvgTemp])
 
 
@@ -233,10 +244,13 @@ export default function OutlinedCard(props) {
         <br/>
         <CustomizedSlider onChangeCommitted={handleYearChange}/>
         <br/>
+        {showOverallAvg ? <div>
         <Typography className={classes.title} variant="body2" component="p">
           Average Temperature 
         </Typography>
-        <Paper style={{maxWidth:'50%'}}>
+        <Paper style={{maxWidth:'25%',margin: 'auto',
+            width: '50%'
+            }}>
           <TableContainer style={{maxHeight: 400}}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -262,12 +276,22 @@ export default function OutlinedCard(props) {
             </Table>
           </TableContainer>
         </Paper>
-          {showOverallAvg ? <div><hr></hr>Overall Average Temp: {overallAvgTemp}°C</div>: null}
+          
+            <br></br>
+            <Typography className={classes.title} variant="body2" component="p">Overall Average Temp: {overallAvgTemp}°C</Typography>
+            <h3> Average temperature over the years </h3>
+          <TemperatureStripes tempData={tempData}/>
+            </div>: null}
+          <br></br>
         <br/>
+        {showEmission ? <div>
+          <hr></hr>
         <Typography className={classes.title} variant="body2" component="p">
           Carbon Emissions
         </Typography>
-        <Paper style={{maxWidth:'50%'}}>
+        <Paper style={{maxWidth:'25%', margin: 'auto',
+          width: '50%'
+          }}>
           <TableContainer style={{maxHeight: 400}}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -287,6 +311,9 @@ export default function OutlinedCard(props) {
             </Table>
           </TableContainer>
         </Paper>
+        </div>
+        : null}
+        
       </CardContent>
     </Card>
   );
