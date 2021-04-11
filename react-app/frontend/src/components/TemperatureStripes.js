@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './TemperatureStripes.css';
+import tempKey from './temp-stripes-key.png';
 
 var stripeCounter = 0;
 var normalize = 1;
@@ -10,19 +11,11 @@ function temperatureToColor(temp, tempStats) {
 }
 
 function getBrightness(temp, tempStats) {
-//    return (-25*(Math.pow((temp - tempStats.avgTemp), 2))) + 85;
-    var result = normalize*temperatureToColor(temp, tempStats);
+    var result = normalize*temperatureToColor(temp, tempStats) + 0.2;
     var brightness = result*100;
-//    console.log(brightness);
     if (brightness > 95) {
-        console.log("brightness over 95");
-        console.log(temp);
-        console.log(brightness);
         return 95;
     } else if (brightness < 20) {
-        console.log("brightness under 15");
-        console.log(temp);
-        console.log(brightness);
         return 20;
     }
     return brightness;
@@ -41,23 +34,14 @@ function getHue(temp, avgTemp) {
 }
 
 function getStripe(ctemp, numOfEntries, tempStats) {
-//     var temp = (9/5)*ctemp + 32;
      var temp = ctemp;
-//     var hue = 200 + (160 * ( temp / 100 ));
      var hue = getHue(temp, tempStats.avgTemp);
      var l = getBrightness(temp, tempStats);
-//     console.log("next");
-//     console.log(ctemp)
-//     console.log(temp);
-//     console.log(hue);
-//     console.log(l);
      var stripeWidth = 100 / numOfEntries;
      var widthPercent = stripeWidth + '%';
-//     console.log(widthPercent);
      var moveLeft = 0;
      moveLeft = (stripeCounter * stripeWidth);
      var leftPercent = moveLeft + '%';
-//     console.log(leftPercent);
 
      stripeCounter++;
      return <div key={stripeCounter} className="stripe" style={{
@@ -71,7 +55,6 @@ function getStripe(ctemp, numOfEntries, tempStats) {
 function TemperatureStripes({tempData}) {
   stripeCounter = 0;
   normalize = 1;
-  console.log(tempData)
   var avgTemp = 0;
   var data = [{average_temp: 8, average_temp: 9}];
   var length = 0;
@@ -81,16 +64,13 @@ function TemperatureStripes({tempData}) {
   var tempStats = {};
 
   if (!(Object.keys(tempData).length === 0 && tempData.constructor === Object)) {
-    console.log(tempData.std);
-    data = tempData.countryYearlyData;
+    data = (tempData.stateData.length > 0) ? tempData.stateData : tempData.countryYearlyData;
     length = data.length;
-//    avgTemp = (9/5)*tempData.overallAvgTemp + 32;
+
     avgTemp = tempData.overallAvgTemp;
     stdDev = tempData.std;
     maxTemp = Math.max.apply(Math, data.map(function(item) { return item.average_temp; }))
     minTemp = Math.min.apply(Math, data.map(function(item) { return item.average_temp; }))
-    console.log(maxTemp)
-    console.log(minTemp)
 
     tempStats = {
         "avgTemp": avgTemp,
@@ -98,20 +78,19 @@ function TemperatureStripes({tempData}) {
         "maxTemp": maxTemp,
         "minTemp": minTemp
     };
-    console.log(tempStats);
-    normalize = 1/(temperatureToColor(avgTemp, tempStats) + 0.1);
-    console.log(normalize);
+    normalize = 1/(temperatureToColor(avgTemp, tempStats) + 0.3);
   }
 
-  console.log("length");
-  console.log(length);
 
   return (
+  <div>
     <div className="box">
         {data.map((row)=>{
             return getStripe(row.average_temp, length, tempStats)
         })}
     </div>
+    <img src={tempKey} style={{ width: 400}}/>
+  </div>
   );
 }
 
