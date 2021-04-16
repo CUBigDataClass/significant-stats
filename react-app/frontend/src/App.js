@@ -14,7 +14,10 @@ import Button from '@material-ui/core/Button';
 import CountrySelect from './components/CountrySelect.js';
 import TemperatureStripes from './components/TemperatureStripes.js';
 import OutlinedCard from './components/OutlinedCard';
-
+//import d3
+// import * as d3 from d3
+//import chart
+import barchart from './barchart'
 // const getData = async() =>
 //   await fetch(`/data/Colorado`)
 //   .then(res => (res.ok ? res : Promise.reject(res)))
@@ -127,6 +130,9 @@ function App() {
       console.log(error);
     }
   }
+  const div = d3.create("div");
+
+  
 
   useEffect(() => {
     var curYear = parseInt(startYear);
@@ -192,6 +198,8 @@ function App() {
     setShowStateForm(false);
     console.log(showStateForm,showCountryForm);
   }
+
+
 
   return (
     <div className="App">
