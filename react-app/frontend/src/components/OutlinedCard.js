@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 });
 
 export default function OutlinedCard(props) {
-  const classes = useStyles(); 
+  const classes = useStyles();
   const [stateTempData, setStateTempData] = useState([]);
   const [errorMessage,setErrorMessage] = useState('');
   const [countryTempData, setCountryTempData] = useState([]);
@@ -246,7 +246,7 @@ export default function OutlinedCard(props) {
         <br/>
         {showOverallAvg ? <div>
         <Typography className={classes.title} variant="body2" component="p">
-          Average Temperature 
+          Average Temperature
         </Typography>
         <Paper style={{maxWidth:'25%',margin: 'auto',
             width: '50%'
@@ -276,7 +276,7 @@ export default function OutlinedCard(props) {
             </Table>
           </TableContainer>
         </Paper>
-          
+
             <br></br>
             <Typography className={classes.title} variant="body2" component="p">Overall Average Temp: {overallAvgTemp}°C</Typography>
             <h3> Average temperature over the years </h3>
@@ -311,9 +311,11 @@ export default function OutlinedCard(props) {
             </Table>
           </TableContainer>
         </Paper>
+        <br></br>
+        <EmissionsGraph countryEmission={countryEmission}/>
         </div>
         : null}
-        
+
       </CardContent>
     </Card>
   );
