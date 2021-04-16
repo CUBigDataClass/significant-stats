@@ -85,7 +85,7 @@ function EmissionsGraph({countryEmission}) {
           ref={ref}
           style={{
             position: 'relative',
-            left: '50%',
+            left: '40%',
             margin: 'auto',
             height: 800,
             width: '100%',
