@@ -5,17 +5,18 @@ import Slider from '@material-ui/core/Slider';
 
 const useStyles = makeStyles({
   root: {
-    width: 300,
+    width: 500,
+    display: 'inline-block',
   },
 });
 
 const marks = [
   {
-    value: 0,
+    value: 1796,
     label: "1796"
   },
   {
-    value: 100,
+    value: 2019,
     label: "2019"
   }
 ];
@@ -24,20 +25,21 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function CustomSlider() {
+export default function CustomSlider(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState([20, 37]);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleYearChange = (event, newValue) => {
+    props.onChangeCommitted(newValue);
   };
   return (
     <div className={classes.root}>
       <Typography id="range-slider" gutterBottom>
       </Typography>
       <Slider
-        value={value}
-        onChange={handleChange}
+        defaultValue={[1990,2000]}
+        min={1796}
+        max={2019}
+        onChangeCommitted={handleYearChange}
         marks={marks}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
