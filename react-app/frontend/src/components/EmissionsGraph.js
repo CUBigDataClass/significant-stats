@@ -65,14 +65,14 @@ function EmissionsGraph({countryEmission}) {
             .attr("height", (d) => y1(0) - y1(d.emission));
 
           svg.append("text")
-          .attr("transform", "translate(" + (width/2) + " ," + (height-10) + ")")
+          .attr("transform", "translate(" + (width/2) + " ," + (height-30) + ")")
           .style("text-anchor", "middle")
           .text("Year");
 
           svg.append("text")
           .attr("transform", "rotate(-90)")
           .attr("x", -(height/2))
-          .attr("y", 15)
+          .attr("y", 30)
           .style("text-anchor", "middle")
           .text("Carbon Emissions (Tons)");
         },
@@ -83,8 +83,9 @@ function EmissionsGraph({countryEmission}) {
         <svg
           ref={ref}
           style={{
+            margin: 'auto',
             height: 500,
-            width: "100%",
+            width: "50%",
             marginRight: "0px",
             marginLeft: "0px",
           }}
