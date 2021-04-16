@@ -71,8 +71,8 @@ function EmissionsGraph({countryEmission}) {
 
           svg.append("text")
           .attr("transform", "rotate(-90)")
-          .attr("x", -(height/2))
-          .attr("y", 30)
+          .attr("x", (height/2))
+          .attr("y", -50)
           .style("text-anchor", "middle")
           .text("Carbon Emissions (Tons)");
         },
@@ -85,7 +85,7 @@ function EmissionsGraph({countryEmission}) {
           style={{
             margin: 'auto',
             height: 500,
-            width: "auto",
+            width: "50%",
             marginRight: "0px",
             marginLeft: "0px",
           }}
