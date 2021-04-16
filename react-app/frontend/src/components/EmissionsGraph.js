@@ -63,6 +63,18 @@ function EmissionsGraph({countryEmission}) {
             .attr("width", x.bandwidth())
             .attr("y", (d) => y1(d.emission))
             .attr("height", (d) => y1(0) - y1(d.emission));
+
+          svg.append("text")
+          .attr("transform", "translate(" + (width/2) + " ," + (height-10) + ")")
+          .style("text-anchor", "middle")
+          .text("Year");
+
+          svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -(height/2))
+          .attr("y", 15)
+          .style("text-anchor", "middle")
+          .text("Carbon Emissions (Tons)");
         },
         [countryEmission.length]
       );
