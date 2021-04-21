@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
-
+import VideoBg from "reactjs-videobg";
 
 import LocationBox from './components/LocationBox.js';
 import Button from '@material-ui/core/Button';
@@ -56,11 +56,14 @@ function App(props) {
         console.log("We got c!");
       }
     }
-    
+
   },[tempData])
 
   return (
     <div className="App">
+      <VideoBg>
+        <VideoBg.Source src={backgroundVideo} type="video/mp4" />
+      </VideoBg>;
       {/* Maybe implement video background of Earth if I can figure out style problems */}
       {/* <video autoPlay loop muted id='video' style={{
         position:'absolute',
@@ -75,9 +78,7 @@ function App(props) {
       }}>
         <source src={backgroundVideo} type='video/mp4'/>
       </video> */}
-      <div style={{
-          backgroundColor: 'rgba(255,255,255,0.5)'
-        }}>
+      <div style={{backgroundColor: 'rgba(255,255,255,0.5)'}}>
           <div>
             <LocationBox onChange={handleLocationChange}/>
             <br></br>
@@ -85,8 +86,8 @@ function App(props) {
           <div style={{ position: 'relative'}}>
             <OutlinedCard country={country} stateName={stateName} onDataChange={handleDataChange} />
           </div>
-        </div>
-      
+      </div>
+
     </div>
 
   );
