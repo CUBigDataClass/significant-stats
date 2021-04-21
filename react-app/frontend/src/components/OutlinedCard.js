@@ -237,7 +237,7 @@ export default function OutlinedCard(props) {
 
 
   return (
-    <Card className={classes.root} variant="outlined" style={{ backgroundColor: 'rgba(255,255,255,0.5)'}}>
+    <Card className={classes.root} variant="outlined" style={{ backgroundColor: 'rgba(255,255,255,0)'}}>
       <CardContent>
         <Typography variant="h5" component="h2">
             Location Name: {props.country} {props.stateName}
