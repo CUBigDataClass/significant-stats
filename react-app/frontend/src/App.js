@@ -63,7 +63,7 @@ function App(props) {
     <div className="App">
       <VideoBg>
         <VideoBg.Source src={backgroundVideo} type="video/mp4" />
-      </VideoBg>;
+      </VideoBg>
       {/* Maybe implement video background of Earth if I can figure out style problems */}
       {/* <video autoPlay loop muted id='video' style={{
         position:'absolute',
@@ -78,7 +78,18 @@ function App(props) {
       }}>
         <source src={backgroundVideo} type='video/mp4'/>
       </video> */}
-      <div style={{backgroundColor: 'rgba(255,255,255,0.5)'}}>
+
+      <div style={{
+        position: 'fixed',
+        width: '100%', 
+        height: '100%', 
+        top: '0',
+        left: '0',
+        right: '0',
+        bottom: '0',
+        backgroundColor: 'rgba(255,255,255,0.7)'}}></div>
+
+      <div>
           <div>
             <LocationBox onChange={handleLocationChange}/>
             <br></br>
