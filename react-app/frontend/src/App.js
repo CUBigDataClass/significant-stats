@@ -78,9 +78,7 @@ function App(props) {
       }}>
         <source src={backgroundVideo} type='video/mp4'/>
       </video> */}
-      <div style={{
-          backgroundColor: 'rgba(255,255,255,0.5)'
-        }}>
+      <div style={{backgroundColor: 'rgba(255,255,255,0.5)'}}>
           <div>
             <LocationBox onChange={handleLocationChange}/>
             <br></br>
@@ -88,7 +86,7 @@ function App(props) {
           <div style={{ position: 'relative'}}>
             <OutlinedCard country={country} stateName={stateName} onDataChange={handleDataChange} />
           </div>
-        </div>
+      </div>
 
     </div>
 
